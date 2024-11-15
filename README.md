@@ -25,11 +25,14 @@ python3 -m pip install projectaria_client_sdk --no-cache-dir # Aria client SDK i
 ```
 
 5. Run aria-doctor to check for issues
-```aria-doctor```
+```
+aria-doctor
+```
 
-6. Pair glasses to computer
-
-```aria auth pair```
+7. Pair glasses to computer
+```
+aria auth pair
+```
 
 After running this command in terminal, go to the Aria app on your phone and approve the pairing
 
