@@ -14,7 +14,9 @@ conda activate aria
 ```
 
 2. Clone codebase (official aria codebase from Meta)
-`git clone https://github.com/facebookresearch/projectaria_tools.git -b 1.5.5`
+```
+git clone https://github.com/facebookresearch/projectaria_tools.git -b 1.5.5
+```
 * the full codebase is only required for visualization, the actual livestreaming only requires common.py, test.py, and visualizer.py from the sdk files
 
 4. Install required python dependencies
@@ -44,7 +46,18 @@ python3 -m pip install -r requirements.txt
 ```
 
 8. Run streaming file
+If the glasses is connected to your computer via USB, use the following command to generate a certificate for streaming:
 ```
-aria streaming start --interface usb --use-ephemeral-certs
+aria streaming start --interface usb --use-ephemeral-certs #
+```
+
+If you wish to stream over wifi (no USB), use the folowing command to generate a certificate:
+```
+aria streaming start --interface wifi --device-ip <glasses IP address>
+```
+Replace the above glasses IP address with your IP address, found in the Aria app on your phone. Make sure your glasses are connected and that they appear in your dashboard. Your IP address is found under Wi-Fi.
+
+Run the python file for livestreaming using:
+```
 python -m streaming_subscribe
 ```
