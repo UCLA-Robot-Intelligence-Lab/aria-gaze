@@ -2,6 +2,7 @@ name: aria
 channels:
   - defaults
 dependencies:
+  - python=3.9.20
   - _libgcc_mutex=0.1=main
   - _openmp_mutex=5.1=1_gnu
   - ca-certificates=2024.9.24=h06a4308_0

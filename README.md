@@ -1,8 +1,6 @@
 # Project Aria Gaze
 Using gaze from Meta's aria glasses in for robot policy learning
 
-This project is a work in progress, the installation guide below is solely for the livestreaming functionality of the glasses on a Linux Ubuntu system. The installation guide will be updated later on in the project when we have our own code.
-
 For full official Aria documentation, see https://facebookresearch.github.io/projectaria_tools/docs/intro
 
 # Installation Guide
