@@ -6,6 +6,28 @@ This project is a work in progress, the installation guide below is solely for t
 For full official Aria documentation, see https://facebookresearch.github.io/projectaria_tools/docs/intro
 
 # Installation Guide
+We provide instructions for both running our project code AND a full installation of the entire original codebase from Facebook (Meta) Research. For full installation from source, see "Installation from Official Source" below this installation guide.
+
+1. Clone the github repository onto your local machine
+```
+git clone https://github.com/UCLA-Robot-Intelligence-Lab/aria-gaze
+```
+
+2. Create the anaconda environment:
+```
+conda env create -f environment.yml
+```
+
+3. Activate the environemnt and install all libraries
+Make sure that you are in the right directory!
+```
+conda activate aria
+pip install -r requirements.txt
+```
+
+To begin livestreaming on aria glasses, see [these instructions](streaming/instructions.md)
+
+# Installation from Official Source
 
 1. Create virtual environment (using either venv or conda, both have been tested and work)
 ```
@@ -43,21 +65,4 @@ After running this command in terminal, go to the Aria app on your phone and app
 python -m aria.extract_sdk_samples --output ~
 cd ~/projectaria_client_sdk_samples
 python3 -m pip install -r requirements.txt
-```
-
-8. Run streaming file
-If the glasses is connected to your computer via USB, use the following command to generate a certificate for streaming:
-```
-aria streaming start --interface usb --use-ephemeral-certs #
-```
-
-If you wish to stream over wifi (no USB), use the folowing command to generate a certificate:
-```
-aria streaming start --interface wifi --device-ip <glasses IP address>
-```
-Replace the above glasses IP address with your IP address, found in the Aria app on your phone. Make sure your glasses are connected and that they appear in your dashboard. Your IP address is found under Wi-Fi.
-
-Run the python file for livestreaming using:
-```
-python -m streaming_subscribe
 ```

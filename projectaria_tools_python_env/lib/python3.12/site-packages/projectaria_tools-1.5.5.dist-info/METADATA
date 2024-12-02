@@ -1,0 +1,23 @@
+Metadata-Version: 2.1
+Name: projectaria-tools
+Version: 1.5.5
+Summary: Project Aria Tools
+Home-page: https://github.com/facebookresearch/projectaria_tools
+Author: Meta Reality Labs Research
+License: Apache-2.0
+Requires-Python: >=3.8
+License-File: LICENSE
+Requires-Dist: numpy
+Requires-Dist: rerun-sdk>=0.12.0
+Requires-Dist: tqdm
+Provides-Extra: all
+Requires-Dist: requests; extra == "all"
+Requires-Dist: jupyter; extra == "all"
+Requires-Dist: matplotlib; extra == "all"
+Requires-Dist: pandas; extra == "all"
+Requires-Dist: pillow; extra == "all"
+Requires-Dist: plotly; extra == "all"
+Requires-Dist: scipy; extra == "all"
+Requires-Dist: moviepy; extra == "all"
+
+Python API for consuming Aria VRS files, calibration and MPS output and for downloading and consuming Aria open datasets
