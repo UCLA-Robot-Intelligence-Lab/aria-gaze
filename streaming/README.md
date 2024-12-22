@@ -1,4 +1,6 @@
-# Gaze + RGB Livestreaming with Aria Glasses
+# Livestreaming Gaze + RGB with Aria Glasses
+
+Official documentation currently only contains code for aria livestreaming for RGB images (from the glasses), but we have created a fully functional workaround for livestreaming the gaze estimations as well. We still utilize only libraries that are defined within the scope of project Aria, as well as the gaze estimation model referenced in the official documentation (see below for more info).
 
 The current streaming code contains live gaze estimation synced with the RGB camera. The [gaze_model folder](gaze_model) contains the gaze estimation model (see more info [here](https://facebookresearch.github.io/projectaria_tools/docs/data_formats/mps/mps_eye_gaze)) for model's weights and configurations that are loaded in streaming subscribe. The inference speed for the model is approximately 0.003s (averaged).
 
