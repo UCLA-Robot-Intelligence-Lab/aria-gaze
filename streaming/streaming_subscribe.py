@@ -91,8 +91,8 @@ def main():
     args = parse_args()
     if args.update_iptables and sys.platform.startswith("linux"):
         update_iptables()
-    if args.device_ip is None:
-        raise Exception("missing device ip argument")
+    # if args.device_ip is None:
+    #     raise Exception("missing device ip argument")
 
     # Initialize model for inference using path to model weight and config file
     model = infer.EyeGazeInference(
@@ -107,7 +107,8 @@ def main():
     # 1. Create and connect the DeviceClient for fetching device calibration, which is required to cast 3D gaze prediction to 2D image
     device_client = aria.DeviceClient()
     client_config = aria.DeviceClientConfig()
-    client_config.ip_v4_address = args.device_ip # make sure to hide this IP later using dotenv
+    if args.device_ip:
+        client_config.ip_v4_address = args.device_ip
     device_client.set_client_config(client_config)
     device = device_client.connect()
 
@@ -115,17 +116,16 @@ def main():
     streaming_manager = device.streaming_manager
     streaming_client = aria.StreamingClient()
 
-    # 3. Configure subscription to listen to Aria's RGB and SLAM streams.
+    # 3. Configure subscription to listen to Aria's RGB streams.
     # @see StreamingDataType for the other data types
     config = streaming_client.subscription_config
     config.subscriber_data_type = (
-        aria.StreamingDataType.Rgb | aria.StreamingDataType.Slam | aria.StreamingDataType.EyeTrack
+        aria.StreamingDataType.Rgb | aria.StreamingDataType.EyeTrack
     )
 
     # A shorter queue size may be useful if the processing callback is always slow and you wish to process more recent data
     # For visualizing the images, we only need the most recent frame so set the queue size to 1
     config.message_queue_size[aria.StreamingDataType.Rgb] = 1
-    config.message_queue_size[aria.StreamingDataType.Slam] = 1
     config.message_queue_size[aria.StreamingDataType.EyeTrack] = 1
 
     # Set the security options
