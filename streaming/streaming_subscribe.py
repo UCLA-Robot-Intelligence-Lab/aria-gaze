@@ -196,45 +196,48 @@ def main():
     # 8. Continuously loop through and run gaze estimation + postprocessing on every frame before displaying
     while not quit_keypress():
         # Render the RGB image
-        if aria.CameraId.Rgb in observer.images:
-            rgb_image = np.rot90(observer.images[aria.CameraId.Rgb], -1)
-            rgb_image = cv2.cvtColor(rgb_image, cv2.COLOR_BGR2RGB)
+        try:
+            if aria.CameraId.Rgb in observer.images:
+                rgb_image = np.rot90(observer.images[aria.CameraId.Rgb], -1)
+                rgb_image = cv2.cvtColor(rgb_image, cv2.COLOR_BGR2RGB)
 
-            gaze = observer.images.get(aria.CameraId.EyeTrack)
-            
-            if gaze is not None and np.mean(gaze) > 10 and np.median(gaze) > 10:
+                gaze = observer.images.get(aria.CameraId.EyeTrack)
                 
-                # Run inference using gaze estimation model
-                gaze_coordinates = gaze_inference(gaze, model, rgb_stream_label, device_calibration, rgb_camera_calibration)
+                if gaze is not None and np.mean(gaze) > 10 and np.median(gaze) > 10:
+                    
+                    # Run inference using gaze estimation model
+                    gaze_coordinates = gaze_inference(gaze, model, rgb_stream_label, device_calibration, rgb_camera_calibration)
 
-                # If gaze coordinates exist, plot as a bright green dot on screen
-                if gaze_coordinates is not None:
-                    cv2.circle(rgb_image, (int(gaze_coordinates[0]), int(gaze_coordinates[1])), 5, (0, 255, 0), 10)
-                
-                # Log coordinates of gaze with text
-                cv2.putText(
-                    img = rgb_image,
-                    text = f'Gaze Coordinates: ({round(gaze_coordinates[0], 4)}, {round(gaze_coordinates[1], 4)})',
-                    org = (20, 90),
-                    fontFace = cv2.FONT_HERSHEY_SIMPLEX,
-                    fontScale = 1,
-                    color = (0, 0, 255),
-                    thickness = 3
-                )
+                    # If gaze coordinates exist, plot as a bright green dot on screen
+                    if gaze_coordinates is not None:
+                        cv2.circle(rgb_image, (int(gaze_coordinates[0]), int(gaze_coordinates[1])), 5, (0, 255, 0), 10)
+                    
+                    # Log coordinates of gaze with text
+                    cv2.putText(
+                        img = rgb_image,
+                        text = f'Gaze Coordinates: ({round(gaze_coordinates[0], 4)}, {round(gaze_coordinates[1], 4)})',
+                        org = (20, 90),
+                        fontFace = cv2.FONT_HERSHEY_SIMPLEX,
+                        fontScale = 1,
+                        color = (0, 0, 255),
+                        thickness = 3
+                    )
 
-            else:
-                cv2.putText(
-                    img = rgb_image,
-                    text = f'No Gaze Found',
-                    org = (20, 50),
-                    fontFace = cv2.FONT_HERSHEY_SIMPLEX,
-                    fontScale = 1,
-                    color = (0, 0, 255),
-                    thickness = 3
-                )
+                else:
+                    cv2.putText(
+                        img = rgb_image,
+                        text = f'No Gaze Found',
+                        org = (20, 50),
+                        fontFace = cv2.FONT_HERSHEY_SIMPLEX,
+                        fontScale = 1,
+                        color = (0, 0, 255),
+                        thickness = 3
+                    )
 
-            cv2.imshow(rgb_window, rgb_image)
-            del observer.images[aria.CameraId.Rgb]
+                cv2.imshow(rgb_window, rgb_image)
+                del observer.images[aria.CameraId.Rgb]
+        except Exception as e:
+            print(f'Encountered error: {e}')
         
     # 9. Unsubscribe to clean up resources
     print("Stop listening to image data")
