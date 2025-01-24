@@ -154,17 +154,11 @@ def main():
     # 6. Visualize the streaming data until we close the window
     #    Live gaze stream will be cast onto the RGB window
     rgb_window = "Aria RGB"
-    slam_window = "Aria SLAM"
 
     cv2.namedWindow(rgb_window, cv2.WINDOW_NORMAL)
     cv2.resizeWindow(rgb_window, 1024, 1024)
     cv2.setWindowProperty(rgb_window, cv2.WND_PROP_TOPMOST, 1)
     cv2.moveWindow(rgb_window, 50, 50)
-
-    cv2.namedWindow(slam_window, cv2.WINDOW_NORMAL)
-    cv2.resizeWindow(slam_window, 480 * 2, 640)
-    cv2.setWindowProperty(slam_window, cv2.WND_PROP_TOPMOST, 1)
-    cv2.moveWindow(slam_window, 1100, 50)
 
     # 7. Fetch calibration and labels to be passed to 3D -> 2D gaze coordinate casting function
     rgb_stream_label = "camera-rgb"
@@ -241,17 +235,6 @@ def main():
 
             cv2.imshow(rgb_window, rgb_image)
             del observer.images[aria.CameraId.Rgb]
-
-        # Stack and display the SLAM images
-        if (
-            aria.CameraId.Slam1 in observer.images
-            and aria.CameraId.Slam2 in observer.images
-        ):
-            slam1_image = np.rot90(observer.images[aria.CameraId.Slam1], -1)
-            slam2_image = np.rot90(observer.images[aria.CameraId.Slam2], -1)
-            cv2.imshow(slam_window, np.hstack((slam1_image, slam2_image)))
-            del observer.images[aria.CameraId.Slam1]
-            del observer.images[aria.CameraId.Slam2]
         
     # 9. Unsubscribe to clean up resources
     print("Stop listening to image data")
