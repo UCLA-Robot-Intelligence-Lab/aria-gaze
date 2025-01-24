@@ -102,8 +102,6 @@ def main():
     args = parse_args()
     if args.update_iptables and sys.platform.startswith("linux"):
         update_iptables()
-    # if args.device_ip is None:
-    #     raise Exception("missing device ip argument")
 
     # Initialize model for inference using path to model weight and config file
     model = infer.EyeGazeInference(
