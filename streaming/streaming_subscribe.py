@@ -87,6 +87,17 @@ def gaze_inference(data: np.ndarray, inference_model, rgb_stream_label, device_c
 
     return (rotated_x, rotated_y)
 
+def display_text(image, text: str, position, color=(0, 0, 255)):
+    cv2.putText(
+        img = image,
+        text = text,
+        org = position,
+        fontFace = cv2.FONT_HERSHEY_SIMPLEX,
+        fontScale = 1,
+        color = color,
+        thickness = 3
+    )
+
 def main():
     args = parse_args()
     if args.update_iptables and sys.platform.startswith("linux"):
@@ -213,26 +224,10 @@ def main():
                         cv2.circle(rgb_image, (int(gaze_coordinates[0]), int(gaze_coordinates[1])), 5, (0, 255, 0), 10)
                     
                     # Log coordinates of gaze with text
-                    cv2.putText(
-                        img = rgb_image,
-                        text = f'Gaze Coordinates: ({round(gaze_coordinates[0], 4)}, {round(gaze_coordinates[1], 4)})',
-                        org = (20, 90),
-                        fontFace = cv2.FONT_HERSHEY_SIMPLEX,
-                        fontScale = 1,
-                        color = (0, 0, 255),
-                        thickness = 3
-                    )
+                    display_text(rgb_image, f'Gaze Coordinates: ({round(gaze_coordinates[0], 4)}, {round(gaze_coordinates[1], 4)})', (20, 90))
 
                 else:
-                    cv2.putText(
-                        img = rgb_image,
-                        text = f'No Gaze Found',
-                        org = (20, 50),
-                        fontFace = cv2.FONT_HERSHEY_SIMPLEX,
-                        fontScale = 1,
-                        color = (0, 0, 255),
-                        thickness = 3
-                    )
+                    display_text(rgb_image, 'No Gaze Found', (20, 50))
 
                 cv2.imshow(rgb_window, rgb_image)
                 del observer.images[aria.CameraId.Rgb]
