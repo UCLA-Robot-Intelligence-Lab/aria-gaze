@@ -32,7 +32,6 @@ dependencies:
       - anyio==4.6.2.post1
       - argon2-cffi==23.1.0
       - argon2-cffi-bindings==21.2.0
-      - aria-studio==0.1.0b3
       - arrow==1.3.0
       - asttokens==2.4.1
       - async-lru==2.0.4
