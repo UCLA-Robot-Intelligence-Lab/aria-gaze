@@ -29,6 +29,11 @@ from projectaria_tools.core.mps.utils import get_gaze_vector_reprojection
 from projectaria_tools.core.sensor_data import ImageDataRecord
 from projectaria_tools.core.sophus import SE3
 
+from write_frame import *
+
+# Set up custom data recorder class
+data = DataRecorder(frame_name="gaze_data.mp4", coord_name="gaze_data.npy")
+
 # file paths to model weights and configuration
 model_weights = f"gaze_model/inference/model/pretrained_weights/social_eyes_uncertainty_v1/weights.pth"
 model_config = f"gaze_model/inference/model/pretrained_weights/social_eyes_uncertainty_v1/config.yaml"
@@ -209,7 +214,6 @@ def main():
             if aria.CameraId.Rgb in observer.images:
                 rgb_image = np.rot90(observer.images[aria.CameraId.Rgb], -1)
                 rgb_image = cv2.cvtColor(rgb_image, cv2.COLOR_BGR2RGB)
-                print(rgb_image.shape)
 
                 gaze = observer.images.get(aria.CameraId.EyeTrack)
                 
@@ -220,8 +224,11 @@ def main():
 
                     # If gaze coordinates exist, plot as a bright green dot on screen
                     if gaze_coordinates is not None:
+
+                        data.record_frame(rgb_image, (int(gaze_coordinates[0]), int(gaze_coordinates[1]))) # save frame to mp4
                         cv2.circle(rgb_image, (int(gaze_coordinates[0]), int(gaze_coordinates[1])), 5, (0, 255, 0), 10)
-                    
+                        
+
                     # Log coordinates of gaze with text
                     display_text(rgb_image, f'Gaze Coordinates: ({round(gaze_coordinates[0], 4)}, {round(gaze_coordinates[1], 4)})', (20, 90))
 
@@ -238,4 +245,7 @@ def main():
     streaming_client.unsubscribe()
 
 if __name__ == "__main__":
-    main()
+    try:
+        main()
+    finally:
+        data.end_recording()
