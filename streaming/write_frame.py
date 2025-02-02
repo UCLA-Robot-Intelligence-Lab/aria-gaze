@@ -3,13 +3,17 @@ import cv2
 import ffmpeg
 import numpy as np
 import time
+import random
 
 class DataRecorder():
-    def __init__(self, frame_name="gaze_data.mp4", coord_name="gaze_data.npy", framerate=10):
-        self.output_file_frame = frame_name
-        self.output_file_gaze = coord_name
+    def __init__(self, frame_name="gaze_data", coord_name="gaze_data", framerate=10, post=False):
+        recording_id = random.randint(1, 10000)  # Generates a random integer between 1 and 10 (inclusive)
+        
+        self.output_file_frame = frame_name + str(recording_id) + ".mp4"
+        self.output_file_gaze = coord_name + str(recording_id) + ".npy"
         self.output_np_gaze = []
         self.framerate = int(framerate)
+        self.post = post
 
         # Get frame dimensions from the first image. Assumes all are same size
         self.frame_height, self.frame_width, _ = 1408, 1408, 3 # aria glasses outputs are 1408x1408x3 unless you explicitely change it
@@ -23,10 +27,23 @@ class DataRecorder():
             .run_async(pipe_stdin=True)
         )
 
+        if post:
+            self.output_file_frame_post = frame_name + "_post_"+ str(recording_id) + ".mp4"
+            self.process2 = (
+                ffmpeg
+                .input('pipe:', format='rawvideo', pix_fmt='bgr24', s='{}x{}'.format(self.frame_width, self.frame_height), framerate = self.framerate)
+                .output(self.output_file_frame_post, vcodec='libx264', pix_fmt='yuv420p') # Using h264 codec for mp4
+                .overwrite_output()
+                .run_async(pipe_stdin=True)
+            )
+
     def record_frame(self, frame, coords):
         self.process.stdin.write(frame.tobytes())
         self.output_np_gaze.append(coords)
 
+    def record_frame_post(self, frame):
+        # no need to check, this function shouldn't be called if post is false
+        self.process2.stdin.write(frame.tobytes())
 
     def end_recording(self):
         # Clean up and finish writing to video
@@ -38,3 +55,9 @@ class DataRecorder():
         # Finish writing gaze coordinate information
         np.save(self.output_file_gaze, np.array(self.output_np_gaze, dtype=object))
         print(f'Gaze coordinates saved to {self.output_file_gaze}')
+
+        if self.post:
+            self.process2.stdin.close()
+            self.process2.wait()
+            print(f'Recording with Post-Processing Terminated.')
+            print(f"Video saved to {self.output_file_frame_post}")
