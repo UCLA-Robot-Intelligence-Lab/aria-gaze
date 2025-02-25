@@ -3,8 +3,15 @@ Using gaze from Meta's aria glasses in for robot policy learning
 
 For full official Aria documentation, see https://facebookresearch.github.io/projectaria_tools/docs/intro
 
+# Requirements
+- x64 Linux distributions of:
+  - Fedora 36, 37, 38
+  - Ubuntu focal (20.04 LTS) and jammy (22.04 LTS)
+  - Windows (MSVC 2019/2022)
+- Mac Intel or Mac ARM-based (M1) with MacOS 11 (Big Sur) or newer
+
 # Installation Guide
-We provide instructions for both running our project code AND a full installation of the entire original codebase from Facebook (Meta) Research. For full installation from source, see "Installation from Official Source" below this installation guide.
+We provide instructions for both running our project code AND a full installation of the entire original codebase from Facebook (Meta) Research. For full installation from source, see "Installation from Official Source" below this installation guide. 
 
 1. Clone the github repository onto your local machine
 ```
