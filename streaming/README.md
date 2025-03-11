@@ -56,7 +56,7 @@ python record_aria.py
 python record_aria_post.py
 ```
 
-3. The [record_realsense](record_realsense.py) python file allows you stream on BOTH the aria and realsense robot cameras simultaneously, as well as record the both footages, which are saved as mp4 files, as well as the gaze point from the realsense's point of view, saved once again as a .npy file.
+3. The [record_realsense](record_realsense.py) python file allows you stream on BOTH the aria and realsense robot cameras simultaneously, as well as record the realsense footage (only), which is saved as an mp4 files, as well as the gaze point from the realsense's point of view, saved once again as a .npy file.
 
 ```
 python record_realsense.py
