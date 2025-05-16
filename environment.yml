@@ -1,4 +1,4 @@
-name: aria
+name: gaze-aloha
 channels:
   - defaults
 dependencies:
