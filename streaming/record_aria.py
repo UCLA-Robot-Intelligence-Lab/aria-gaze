@@ -203,7 +203,7 @@ def main():
 
     # Retrieve RGB camera calibration from SE3 Object
     # The focal length can also be 611.1120152034575
-    rgb_camera_calibration = get_linear_camera_calibration(1408, 1408, 550, 'camera-rgb', se3_transform) # the dimensions of the RGB camera is (1408, 1408)
+    rgb_camera_calibration = get_linear_camera_calibration(1408, 1408, 611.1120152034575, 'camera-rgb', se3_transform) # the dimensions of the RGB camera is (1408, 1408)
 
     np.set_printoptions(threshold=np.inf) # set print limit to inf
 
