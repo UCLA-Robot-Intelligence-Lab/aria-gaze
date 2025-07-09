@@ -6,14 +6,14 @@ import time
 import random
 
 class DataRecorder():
-    def __init__(self, frame_name="gaze_data", coord_name="gaze_data", framerate=10, post=False, timestamp=False):
+    def __init__(self, frame_name="gaze_data", coord_name="gaze_data", framerate=10, post=False, record_timestamp=True):
         recording_id = random.randint(1, 10000)  # Generates a random integer between 1 and 10000 (inclusive)
         
         self.output_file_frame = frame_name + str(recording_id) + ".mp4"
         self.output_file_gaze = coord_name + str(recording_id) + ".npy"
         self.output_file_timestamps = coord_name + "_timestamps_" + str(recording_id) + ".npy"
         self.output_np_gaze = []
-        self.record_timestamp = timestamp
+        self.record_timestamp = record_timestamp
         self.timestamps = []
         self.framerate = int(framerate)
         self.post = post
@@ -61,11 +61,15 @@ class DataRecorder():
         print(f'Gaze coordinates saved to {self.output_file_gaze}')
 
         if self.record_timestamp:
+            print('test')
             np.asarray(self.timestamps, dtype=np.float64)
             np.save(self.output_file_timestamps, self.timestamps)
+            print(f'Timestamps saved to {self.output_file_timestamps}')
 
         if self.post:
             self.process2.stdin.close()
             self.process2.wait()
             print(f'Recording with Post-Processing Terminated.')
             print(f"Video saved to {self.output_file_frame_post}")
+
+        print('Recording Ended Successfully!')

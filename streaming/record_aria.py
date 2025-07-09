@@ -32,7 +32,7 @@ from projectaria_tools.core.sophus import SE3
 from write_frame import *
 
 # Set up custom data recorder class
-data = DataRecorder(frame_name="gaze_data", coord_name="gaze_data", timestamp=True)
+data = DataRecorder(frame_name="gaze_data", coord_name="gaze_data", record_timestamp=True)
 
 # file paths to model weights and configuration
 model_weights = f"gaze_model/inference/model/pretrained_weights/social_eyes_uncertainty_v1/weights.pth"
@@ -84,7 +84,7 @@ def gaze_inference(data: np.ndarray, inference_model, rgb_stream_label, device_c
 
     # Adjust for image rotation
     width = 1408
-    if gaze_projection.any() is None:
+    if gaze_projection is None:
         return (0, 0)
     x, y = gaze_projection
     rotated_x = width - y
