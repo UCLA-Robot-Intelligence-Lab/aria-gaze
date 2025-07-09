@@ -6,12 +6,15 @@ import time
 import random
 
 class DataRecorder():
-    def __init__(self, frame_name="gaze_data", coord_name="gaze_data", framerate=10, post=False):
+    def __init__(self, frame_name="gaze_data", coord_name="gaze_data", framerate=10, post=False, timestamp=False):
         recording_id = random.randint(1, 10000)  # Generates a random integer between 1 and 10000 (inclusive)
         
         self.output_file_frame = frame_name + str(recording_id) + ".mp4"
         self.output_file_gaze = coord_name + str(recording_id) + ".npy"
+        self.output_file_timestamps = coord_name + "_timestamps_" + str(recording_id) + ".npy"
         self.output_np_gaze = []
+        self.record_timestamp = timestamp
+        self.timestamps = []
         self.framerate = int(framerate)
         self.post = post
 
@@ -40,6 +43,7 @@ class DataRecorder():
     def record_frame(self, frame, coords):
         self.process.stdin.write(frame.tobytes())
         self.output_np_gaze.append(coords)
+        self.timestamps.append(time.time())
 
     def record_frame_post(self, frame):
         # no need to check, this function shouldn't be called if post is false
@@ -55,6 +59,10 @@ class DataRecorder():
         # Finish writing gaze coordinate information
         np.save(self.output_file_gaze, np.array(self.output_np_gaze, dtype=object))
         print(f'Gaze coordinates saved to {self.output_file_gaze}')
+
+        if self.record_timestamp:
+            np.asarray(self.timestamps, dtype=np.float64)
+            np.save(self.output_file_timestamps, self.timestamps)
 
         if self.post:
             self.process2.stdin.close()

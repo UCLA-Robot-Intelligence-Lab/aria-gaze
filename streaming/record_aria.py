@@ -32,7 +32,7 @@ from projectaria_tools.core.sophus import SE3
 from write_frame import *
 
 # Set up custom data recorder class
-data = DataRecorder(frame_name="gaze_data.mp4", coord_name="gaze_data.npy")
+data = DataRecorder(frame_name="gaze_data", coord_name="gaze_data", timestamp=True)
 
 # file paths to model weights and configuration
 model_weights = f"gaze_model/inference/model/pretrained_weights/social_eyes_uncertainty_v1/weights.pth"
