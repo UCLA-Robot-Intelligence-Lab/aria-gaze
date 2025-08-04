@@ -4,10 +4,11 @@ import ffmpeg
 import numpy as np
 import time
 import random
+import datetime
 
 class DataRecorder():
     def __init__(self, frame_name="gaze_data", coord_name="gaze_data", framerate=10, post=False, record_timestamp=True):
-        recording_id = random.randint(1, 10000)  # Generates a random integer between 1 and 10000 (inclusive)
+        recording_id = datetime.now().strftime("%Y%m%d%H%M%S")
         
         self.output_file_frame = frame_name + str(recording_id) + ".mp4"
         self.output_file_gaze = coord_name + str(recording_id) + ".npy"
