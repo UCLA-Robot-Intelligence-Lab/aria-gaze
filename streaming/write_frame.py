@@ -3,8 +3,7 @@ import cv2
 import ffmpeg
 import numpy as np
 import time
-import random
-import datetime
+from datetime import datetime
 
 class DataRecorder():
     def __init__(self, frame_name="gaze_data", coord_name="gaze_data", framerate=10, post=False, record_timestamp=True):
